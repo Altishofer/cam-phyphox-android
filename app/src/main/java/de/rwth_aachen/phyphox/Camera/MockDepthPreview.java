@@ -10,6 +10,10 @@ import androidx.annotation.RequiresApi;
 public class MockDepthPreview extends DepthPreview {
 
     CameraManager cameraManager;
+    private static final int FIXED_WIDTH = 1080;
+    private static final int FIXED_HEIGHT = 1080;
+
+
 
     public MockDepthPreview(Context context) {
         super(context);
@@ -47,13 +51,18 @@ public class MockDepthPreview extends DepthPreview {
     }
 
     @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture st, int width, int height) {
+    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
         if (depthInput == null) return;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
-                depthInput.attachPreviewSurface(st, width, height);
+                // Set the wide, low resolution for the preview
+                surfaceTexture.setDefaultBufferSize(FIXED_WIDTH, FIXED_HEIGHT);
+                depthInput.detachPreviewSurface(); // Ensure no leftover sessions
+                depthInput.attachPreviewSurface(surfaceTexture, FIXED_WIDTH, FIXED_HEIGHT);
+                updateTransformation(FIXED_WIDTH, FIXED_HEIGHT); // Update transformation with fixed resolution
             } catch (Exception e) {
-                // Handle exceptions
+                e.printStackTrace();
             }
         }
     }
@@ -64,9 +73,11 @@ public class MockDepthPreview extends DepthPreview {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
+                // Keep the wide, low resolution for the preview
+                surfaceTexture.setDefaultBufferSize(FIXED_WIDTH, FIXED_HEIGHT);
                 depthInput.detachPreviewSurface(); // Stop the old preview session
-                depthInput.attachPreviewSurface(surfaceTexture, width, height); // Attach the updated surface
-                updateTransformation(width, height); // Adjust transformation
+                depthInput.attachPreviewSurface(surfaceTexture, FIXED_WIDTH, FIXED_HEIGHT); // Attach the updated surface
+                updateTransformation(FIXED_WIDTH, FIXED_HEIGHT); // Adjust transformation
             } catch (Exception e) {
                 e.printStackTrace();
             }
