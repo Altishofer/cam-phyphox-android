@@ -1959,6 +1959,21 @@ public class ExpView implements Serializable{
             warningText = res.getString(R.string.remoteDepthGUIWarning).replace("'", "\\'");
         }
 
+        @Override
+        protected String dataCompleteHTML() {
+            return "function() {" +
+                    "var imgElement = document.getElementById('streamedImage');" +
+                    "if (!imgElement) return;" +
+                    "var imageData = elementData[" + htmlID + "]['image'];" +
+                    "if (imageData) {" +
+                    "    imgElement.src = 'data:image/jpeg;base64,' + imageData;" +
+                    "    imgElement.alt = 'Depth Image';" +
+                    "} else {" +
+                    "    imgElement.alt = 'No image data available';" +
+                    "}" +
+                    "}";
+        }
+
         //Interface to change the height of the graph
         protected void setAspectRatio(double aspectRatio) {
             this.aspectRatio = aspectRatio;

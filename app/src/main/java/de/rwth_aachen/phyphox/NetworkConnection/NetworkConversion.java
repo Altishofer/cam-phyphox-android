@@ -77,6 +77,8 @@ public class NetworkConversion {
         }
     }
 
+
+
     public static class Json extends Conversion {
         JSONObject json[] = null;
 
@@ -132,6 +134,24 @@ public class NetworkConversion {
                 }
             }
             return result.toArray(new Double[result.size()]);
+        }
+    }
+
+    public static class Image extends Conversion {
+        byte[] imageData = null;
+
+        public void prepare(byte[][] data) throws ConversionException {
+            if (data.length > 0) {
+                imageData = data[0];
+            }
+        }
+
+        public Double[] get(String id) throws ConversionException {
+            return new Double[0]; // Not used for images
+        }
+
+        public byte[] getImage() {
+            return imageData;
         }
     }
 }

@@ -35,7 +35,7 @@ public class NetworkConnection implements NetworkService.RequestCallback, Networ
 
     public static class NetworkSendableData {
         public enum DataType {
-                BUFFER, METADATA, TIME;
+            BUFFER, METADATA, TIME, IMAGE; // Add IMAGE type
         }
 
         public DataType type;
@@ -44,18 +44,28 @@ public class NetworkConnection implements NetworkService.RequestCallback, Networ
         public Metadata metadata = null;
         public ExperimentTimeReference timeReference = null;
         public Map<String, String> additionalAttributes = null;
+        public byte[] imageData = null; // Add image data field
+
         public NetworkSendableData(DataBuffer buffer, boolean keep) {
             this.type = DataType.BUFFER;
             this.buffer = buffer;
             this.keep = keep;
         }
+
         public NetworkSendableData(Metadata metadata) {
             this.type = DataType.METADATA;
             this.metadata = metadata;
         }
+
         public NetworkSendableData(ExperimentTimeReference timeReference) {
             this.type = DataType.TIME;
             this.timeReference = timeReference;
+        }
+
+        // Add constructor for image data
+        public NetworkSendableData(byte[] imageData) {
+            this.type = DataType.IMAGE;
+            this.imageData = imageData;
         }
     }
 

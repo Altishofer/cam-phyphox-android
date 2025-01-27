@@ -2,6 +2,7 @@ package de.rwth_aachen.phyphox.NetworkConnection;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Base64;
 
 import org.apache.poi.util.IOUtils;
 import org.json.JSONArray;
@@ -123,6 +124,9 @@ public class NetworkService {
                             }
                             timeInfo.put("events", events);
                             json.put(item.getKey(), timeInfo);
+                        } else if (item.getValue().type == NetworkConnection.NetworkSendableData.DataType.IMAGE) {
+                            // Handle image data
+                            json.put(item.getKey(), Base64.encodeToString(item.getValue().imageData, Base64.DEFAULT));
                         }
                     }
                     postData = json.toString();
