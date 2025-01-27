@@ -52,6 +52,7 @@ import java.util.Vector;
 
 import de.rwth_aachen.phyphox.Camera.DepthInput;
 import de.rwth_aachen.phyphox.Camera.DepthPreview;
+import de.rwth_aachen.phyphox.Camera.MockDepthPreview;
 import de.rwth_aachen.phyphox.Helper.DecimalTextWatcher;
 import de.rwth_aachen.phyphox.Helper.Helper;
 import de.rwth_aachen.phyphox.Helper.RGB;
@@ -2028,7 +2029,8 @@ public class ExpView implements Serializable{
             titleLine.addView(labelView);
 
             //Create the preview view
-            cv = new DepthPreview(c);
+            //cv = new DepthPreview(c);
+            cv = new MockDepthPreview(c);
             cv.attachDepthInput(experiment.depthInput);
             cv.setLayoutParams(new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,

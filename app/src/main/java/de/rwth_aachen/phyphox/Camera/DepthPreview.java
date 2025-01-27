@@ -37,19 +37,19 @@ import de.rwth_aachen.phyphox.MarkerOverlayView;
 
 public class DepthPreview extends FrameLayout implements TextureView.SurfaceTextureListener {
     DepthInput depthInput = null;
-    private TextureView camView;
+    protected TextureView camView;
     Matrix transformation = new Matrix();
-    private MarkerOverlayView overlayView;
+    protected MarkerOverlayView overlayView;
 
-    private boolean interactive = false;
-    private double aspectRatio = 2.5;
+    protected boolean interactive = false;
+    protected double aspectRatio = 2.5;
 
-    private boolean processingGesture = false;
+    protected boolean processingGesture = false;
     int panningIndexX = 0;
     int panningIndexY = 0;
     RectF outer = null;
 
-    private void init() {
+    protected void init() {
         camView = new TextureView(getContext());
         camView.setSurfaceTextureListener(this);
         addView(camView);
@@ -198,7 +198,7 @@ public class DepthPreview extends FrameLayout implements TextureView.SurfaceText
         return true;
     }
 
-    private void updateTransformation(int outWidth, int outHeight) {
+    protected void updateTransformation(int outWidth, int outHeight) {
         int w = depthInput.previewW;
         int h = depthInput.previewH;
         if (w == 0 || h == 0)
@@ -240,7 +240,7 @@ public class DepthPreview extends FrameLayout implements TextureView.SurfaceText
         updateOverlay();
     }
 
-    private void updateOverlay() {
+    protected void updateOverlay() {
         float xmin = Math.min(depthInput.x1, depthInput.x2);
         float xmax = Math.max(depthInput.x1, depthInput.x2);
         float ymin = Math.min(depthInput.y1, depthInput.y2);

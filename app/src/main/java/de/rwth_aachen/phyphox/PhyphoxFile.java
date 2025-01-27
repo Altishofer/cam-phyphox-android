@@ -56,6 +56,7 @@ import de.rwth_aachen.phyphox.Bluetooth.ConversionsInput;
 import de.rwth_aachen.phyphox.Bluetooth.ConversionsOutput;
 import de.rwth_aachen.phyphox.Camera.CameraHelper;
 import de.rwth_aachen.phyphox.Camera.DepthInput;
+import de.rwth_aachen.phyphox.Camera.MockDepthInput;
 import de.rwth_aachen.phyphox.Helper.Helper;
 import de.rwth_aachen.phyphox.Helper.RGB;
 import de.rwth_aachen.phyphox.NetworkConnection.Mqtt.MqttCsv;
@@ -1837,7 +1838,7 @@ public abstract class PhyphoxFile {
 
                         CameraManager cameraManager = (CameraManager) parent.getSystemService(Context.CAMERA_SERVICE);
                         CameraHelper.updateCameraList(cameraManager);
-                        experiment.depthInput = new DepthInput(mode, (float) x1, (float) x2, (float) y1, (float) y2, outputs, experiment.dataLock, experiment.experimentTimeReference, cameraManager);
+                        experiment.depthInput = new MockDepthInput(mode, (float) x1, (float) x2, (float) y1, (float) y2, outputs, experiment.dataLock, experiment.experimentTimeReference, cameraManager);
 
                         if (!DepthInput.isAvailable()) {
                             throw new phyphoxFileException(parent.getResources().getString(R.string.sensorNotAvailableWarningText1) + " " + parent.getResources().getString(R.string.sensorDepth) + " " + parent.getResources().getString(R.string.sensorNotAvailableWarningText2));

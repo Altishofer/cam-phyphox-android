@@ -3,6 +3,7 @@ package de.rwth_aachen.phyphox.Camera;
 import android.app.Activity;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
@@ -38,28 +39,28 @@ public class DepthInput {
     DepthExtractionMode extractionMode;
     float x1, x2, y1, y2;
 
-    private final ExperimentTimeReference experimentTimeReference;
-    private Lock dataLock;
+    protected final ExperimentTimeReference experimentTimeReference;
+    protected Lock dataLock;
 
     public DataBuffer dataZ; //Data-buffer for x
     public DataBuffer dataT; //Data-buffer for t
 
     public CameraManager cameraManager;
-    private String cameraId = null;
+    protected String cameraId = null;
     int w, h;
 
-    private String previewCameraId = null;
+    protected String previewCameraId = null;
     int previewW, previewH;
-    private float zoom = 1.0f;
-    private Surface previewSurface = null;
+    protected float zoom = 1.0f;
+    protected Surface previewSurface = null;
 
-    private CameraDevice cameraDevice = null;
-    private CameraCaptureSession session = null;
-    private ImageReader imageReader = null;
-    private DepthReader depthReader = null;
+    protected CameraDevice cameraDevice = null;
+    protected CameraCaptureSession session = null;
+    protected ImageReader imageReader = null;
+    protected DepthReader depthReader = null;
 
-    private CameraDevice previewCameraDevice = null;
-    private CameraCaptureSession previewSession = null;
+    protected CameraDevice previewCameraDevice = null;
+    protected CameraCaptureSession previewSession = null;
 
     public static class DepthInputException extends Exception {
         public DepthInputException(String message) {
@@ -79,7 +80,7 @@ public class DepthInput {
                 }
             }
         }
-        return false;
+        return true;
     }
 
     public DepthInput(DepthExtractionMode mode, float x1, float x2, float y1, float y2, Vector<DataOutput> buffers, Lock lock, ExperimentTimeReference experimentTimeReference, CameraManager cameraManager) {
@@ -229,7 +230,7 @@ public class DepthInput {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void determinePreviewSize(int outWidth, int outHeight) {
+    protected void determinePreviewSize(int outWidth, int outHeight) {
         if (previewCameraId == null) {
             previewW = 0;
             previewH = 0;
@@ -335,7 +336,7 @@ public class DepthInput {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void startCamera() throws DepthInputException {
+    public void startCamera() throws DepthInputException, CameraAccessException {
         if (depthReader == null)
             depthReader = new DepthReader();
         if (cameraId == null) {
@@ -468,7 +469,7 @@ public class DepthInput {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void createPreviewSession() {
+    protected void createPreviewSession() {
         if (previewSurface == null)
             return;
 
@@ -522,7 +523,7 @@ public class DepthInput {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void startCameras() throws DepthInputException {
+    public void startCameras() throws DepthInputException, CameraAccessException {
         if (session == null)
             startCamera();
         if (previewSession == null)
