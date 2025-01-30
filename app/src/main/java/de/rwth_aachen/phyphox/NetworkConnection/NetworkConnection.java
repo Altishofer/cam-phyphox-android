@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -35,8 +36,9 @@ public class NetworkConnection implements NetworkService.RequestCallback, Networ
 
     public static class NetworkSendableData {
         public enum DataType {
-                BUFFER, METADATA, TIME;
+            BUFFER, METADATA, TIME, IMAGE;
         }
+
 
         public DataType type;
         public DataBuffer buffer = null;
@@ -56,6 +58,12 @@ public class NetworkConnection implements NetworkService.RequestCallback, Networ
         public NetworkSendableData(ExperimentTimeReference timeReference) {
             this.type = DataType.TIME;
             this.timeReference = timeReference;
+        }
+
+        public Bitmap imageBitmap = null;
+        public NetworkSendableData(Bitmap imageBitmap) { // NEW CONSTRUCTOR
+            this.type = DataType.IMAGE;
+            this.imageBitmap = imageBitmap;
         }
     }
 

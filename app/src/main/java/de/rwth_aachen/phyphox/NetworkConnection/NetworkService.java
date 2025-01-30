@@ -1,13 +1,16 @@
 package de.rwth_aachen.phyphox.NetworkConnection;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Base64;
 
 import org.apache.poi.util.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -123,7 +126,15 @@ public class NetworkService {
                             }
                             timeInfo.put("events", events);
                             json.put(item.getKey(), timeInfo);
+                        } else if (item.getValue().type == NetworkConnection.NetworkSendableData.DataType.IMAGE) {
+                            Bitmap bitmap = item.getValue().imageBitmap;
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                            byte[] byteArray = stream.toByteArray();
+                            String base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                            json.put(item.getKey(), base64Image);
                         }
+
                     }
                     postData = json.toString();
                 } else {

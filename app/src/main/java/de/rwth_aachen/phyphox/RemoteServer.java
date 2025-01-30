@@ -3,6 +3,8 @@ package de.rwth_aachen.phyphox;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -38,6 +40,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.Enumeration;
@@ -362,6 +365,8 @@ public class RemoteServer {
 
         //Now register a handler for different requests
         host.addContext("/", this::handleHome); //The basic interface (index.html) when the user just calls the address
+        host.addContext("/image", this::handleImageRequest);
+
         host.addContext("/style.css", this::handleStyle); //The style sheet (style.css) linked from index.html
         host.addContext("/logo", this::handleLogo); //The phyphox logo, also included in style.css
         host.addContext("/get", this::handleGet); //A get command takes parameters which define, which buffers and how much of them is requested - the response is a JSON set with the data
@@ -883,5 +888,33 @@ public class RemoteServer {
             return respond(response, "{\"error\": \"Unknown file.\"}");
         }
     }
+
+    public int handleImageRequest(Request request, Response response) throws IOException {
+        Bitmap image = getCurrentImage(); // Implement this to get the latest image
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return respond(response, "image/png", new ByteArrayInputStream(byteArray), byteArray.length);
+    }
+
+    public Bitmap getCurrentImage() {
+        int width = 200;
+        int height = 200;
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+
+        Random random = new Random();
+        int backgroundColor = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+        paint.setColor(backgroundColor);
+        canvas.drawRect(0, 0, width, height, paint);
+
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(40);
+        canvas.drawText(String.valueOf(random.nextInt(1000)), 50, 100, paint);
+
+        return bitmap;
+    }
+
 
 }
