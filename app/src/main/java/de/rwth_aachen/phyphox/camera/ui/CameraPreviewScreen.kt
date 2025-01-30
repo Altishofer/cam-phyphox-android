@@ -502,8 +502,9 @@ class CameraPreviewScreen(
                 transformation.postScale(sx, sy)
                 transformation.postTranslate(0.5f * (1f - sx) * outWidth, 0.5f * (1f - sy) * outHeight)
             }
-            previewTextureView.setTransform(transformation)
-            updateOverlay()
+            // Changes Here
+            // previewTextureView.setTransform(transformation)
+            // updateOverlay()
         }
     }
 

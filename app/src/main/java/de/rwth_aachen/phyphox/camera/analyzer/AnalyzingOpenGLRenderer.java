@@ -198,7 +198,7 @@ public class AnalyzingOpenGLRenderer implements Preview.SurfaceProvider, Surface
 
         AnalyzingOpenGLRendererPreviewOutput analyzingOpenGLRendererPreviewOutput = new AnalyzingOpenGLRendererPreviewOutput(cameraPreviewScreen);
         TextureView previewTextureView = cameraPreviewScreen.getPreviewTextureView();
-        previewTextureView.setSurfaceTextureListener(analyzingOpenGLRendererPreviewOutput);
+        // previewTextureView.setSurfaceTextureListener(analyzingOpenGLRendererPreviewOutput);
         if (previewTextureView.isAvailable())
             analyzingOpenGLRendererPreviewOutput.onSurfaceTextureAvailable(previewTextureView.getSurfaceTexture(), previewTextureView.getWidth(), previewTextureView.getHeight());
         previewOutputs.add(analyzingOpenGLRendererPreviewOutput);
@@ -249,6 +249,8 @@ public class AnalyzingOpenGLRenderer implements Preview.SurfaceProvider, Surface
 
                     RectF passepartout = state.getCameraPassepartout();
 
+
+
                     boolean dataNeedsToBeWrittenToBuffers = true;
                     if (measuring) {
                         for (AnalyzingModule analyzingModule : analyzingModules) {
@@ -288,7 +290,6 @@ public class AnalyzingOpenGLRenderer implements Preview.SurfaceProvider, Surface
                         renderingTotal += System.nanoTime() - start;
                         nFrames++;
                     }
-
                 }
         );
     }
@@ -315,7 +316,7 @@ public class AnalyzingOpenGLRenderer implements Preview.SurfaceProvider, Surface
                 }
         );
         for (AnalyzingOpenGLRendererPreviewOutput previewOutput : previewOutputs) {
-            previewOutput.cameraPreviewScreen.get().updateTransformation(previewOutput.w, previewOutput.h);
+            // previewOutput.cameraPreviewScreen.get().updateTransformation(previewOutput.w, previewOutput.h);
         }
     }
 

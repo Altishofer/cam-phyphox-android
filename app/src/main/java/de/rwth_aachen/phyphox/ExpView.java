@@ -2544,7 +2544,7 @@ public class ExpView implements Serializable{
 
         protected cameraElement(String label, String valueOutput, Vector<String> inputs, Resources res) {
             super(label, valueOutput, inputs, res);
-            warningText = res.getString(R.string.remoteCameraPreviewWarning).replace("'", "\\'");
+            warningText = "";
         }
 
         public void applyControlSettings(ShowCameraControls showCameraControls, int exposureAdjustmentLevel) {
@@ -2613,7 +2613,8 @@ public class ExpView implements Serializable{
         @Override
         //Create the HTML markup. We do not stream the video to the web interface, so this is just a placeholder and notification
         protected String createViewHTML(){
-            return "<div style=\"font-size: 105%;\" class=\"graphElement\" id=\"" + htmlID + "\"><span class=\"label\" onclick=\"toggleExclusive("+htmlID+");\">"+this.label+"</span><div class=\"warningIcon\" onclick=\"alert('"+ warningText + "')\"></div></div>";
+            // return "<div style=\"font-size: 105%;\" class=\"graphElement\" id=\"" + htmlID + "\"><span class=\"label\" onclick=\"toggleExclusive("+htmlID+");\">"+this.label+"</span><div class=\"warningIcon\" onclick=\"alert('"+ warningText + "')\"></div></div>";
+            return "";
         }
 
         @Override
